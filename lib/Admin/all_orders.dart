@@ -1,45 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sofrwere_project/services/database.dart';
-import 'package:sofrwere_project/services/shared_pref.dart';
 import 'package:sofrwere_project/widget/support_widget.dart';
 
-class Order extends StatefulWidget {
-  const Order({super.key});
+class AllOrders extends StatefulWidget {
+  const AllOrders({super.key});
 
   @override
-  State<Order> createState() => _OrderState();
+  State<AllOrders> createState() => _AllOrdersState();
 }
 
-class _OrderState extends State<Order> {
-String? email;
-
-getthesharedpref()async{
-    email=await SharedPreferenceHelper().getUserEmail();
-    
-    setState(() {
-      
-    });
-  }
-
+class _AllOrdersState extends State<AllOrders> {
   Stream? orderStream;
 
   getontheload()async{
-    await getthesharedpref();
-    orderStream=await DatabaseMethods().getOrders(email!);
+    orderStream=await DatabaseMethods().allOrders();
     setState(() {
       
     });
   }
+
   @override
   void initState() {
     getontheload();
     super.initState();
     
   }
-  
 
-  Widget allOrders() {
+Widget allOrders() {
     return StreamBuilder(
       stream: orderStream,
       builder: (context, AsyncSnapshot snapshot) {
@@ -66,17 +54,32 @@ getthesharedpref()async{
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(ds["ProductImage"],
-                            height: 120, width: 150, fit: BoxFit.cover),
+                        Image.network(ds["Image"],
+                            height: 100, width: 100, fit: BoxFit.cover),
                             SizedBox(width: 30.0,),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
+                              "Name : "+ ds["Name"],
+                              style: AppWidget.semiboldTextFeildStyle(),
+                            ),
+                            SizedBox(height: 4,),
+                           Container(
+                            width: MediaQuery.of(context).size.width/2,
+                             child: Text(
+                                "Email : "+ ds["Email"],
+                                style: AppWidget.lightTextFeildStyle(),
+                              ),
+                           ),
+                           SizedBox(height: 4,),
+                           Text(
                               ds["Product"],
                               style: AppWidget.semiboldTextFeildStyle(),
                             ),
+                            SizedBox(height: 4,),
                             Text(
                               "\$" + ds["Price"],
                               style: TextStyle(
@@ -85,12 +88,7 @@ getthesharedpref()async{
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text("Status :"+ds["Status"],
-                              style: TextStyle(
-                                color: Color(0xFFfd6f3e),
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.bold,
-                              ),)
+                            
                           ],
                         )
                       ],
@@ -104,26 +102,20 @@ getthesharedpref()async{
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff2f2f2),
-      appBar: AppBar(
-        backgroundColor: Color(0xfff2f2f2),
-        title: Center(
-          child: Text(
-            "Current Orders",
-            style: AppWidget.boldTextFeildStyle(),
-          ),
+      appBar: AppBar(title: Text("All Orders",style: AppWidget.boldTextFeildStyle(),)) ,
+      body:Container(
+        margin:EdgeInsets.only(left: 20,right: 20),
+        child: Column(
+          children: [
+            Expanded(child: allOrders()),
+          ],
         ),
-      ),
-      body: Container(
-          margin: EdgeInsets.only(left: 20.0, right: 20.0),
-          child: Column(
-            children: [
-              Expanded(child: allOrders())
-            ],
-          )),
+      )
     );
   }
 }

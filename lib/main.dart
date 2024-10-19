@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sofrwere_project/Admin/add_product.dart';
 import 'package:sofrwere_project/Admin/admin_login.dart';
+import 'package:sofrwere_project/Admin/all_orders.dart';
+import 'package:sofrwere_project/pages/Order.dart';
 import 'package:sofrwere_project/pages/bottomnav.dart';
 import 'package:sofrwere_project/pages/home.dart';
 import 'package:sofrwere_project/pages/login.dart';
@@ -27,8 +29,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+
+      
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -48,7 +53,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:Signup()
+      home:AllOrders()
     );
   }
 }

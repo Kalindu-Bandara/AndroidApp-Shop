@@ -161,6 +161,7 @@ class _ProductDetailState extends State<ProductDetail> {
           "Email":mail,
           "Image":image,
           "ProductImage":widget.image,
+          "Status": "On the way"
         };
         await DatabaseMethods().orderDetails(orderInfoMap);
         showDialog(context: context, builder: (_)=>AlertDialog(
